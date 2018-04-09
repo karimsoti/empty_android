@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         final Button button = findViewById(R.id.button1);                       //instantiate a button which finds a view using the Id of the button declared in activity_main.xml
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Paul is awesome",Toast.LENGTH_LONG).show();
+
+
 
             }
         });
