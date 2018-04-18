@@ -3,7 +3,9 @@ package com.example.kabdelbaki.empty;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
 
     private PopupWindow mPopupWindow;
     private static final String TAG = "MyVerboseLog";
+
+    public double latitude;
+    public double longitude;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +71,28 @@ public class MainActivity extends AppCompatActivity {
         final Button locationData = findViewById(R.id.locationBtn);                       //instantiate a button which finds a view using the Id of the button declared in activity_main.xml
         locationData.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//
-//                Log.v(TAG, "hello");
                 getLocationEngine();
+
+
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage(longitude + " " + latitude);
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
 
             }
         });
 
+    }
+
+    public void clearCoordinates(){
+        this.latitude = 0.0;
+        this.latitude = 0.0;
     }
 
 
@@ -85,20 +106,17 @@ public class MainActivity extends AppCompatActivity {
             } else {
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
             }
         } else {
 
 
             LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            final double[] longitude = {location.getLongitude()};
-            final double[] latitude = {location.getLatitude()};
+            LocationListener locationListener = new LocationListener() {
 
-            final LocationListener locationListener = new LocationListener() {
-                public void onLocationChanged(Location location) {
-                    longitude[0] = location.getLongitude();
-                    latitude[0] = location.getLatitude();
+                 public void onLocationChanged(Location location) {
+                    longitude = location.getLongitude();
+                    latitude = location.getLatitude();
                 }
 
                 @Override
@@ -118,14 +136,10 @@ public class MainActivity extends AppCompatActivity {
 
 
             };
-
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
-//            Toast.makeText(getApplicationContext(), longitude[0] + " " + latitude[0], Toast.LENGTH_SHORT).show();
+            Log.v(TAG, longitude + " " + latitude);
 
-
-            Log.v(TAG, longitude[0] + " " + latitude[0]);
         }
-//    return"string";
     }
 
 
