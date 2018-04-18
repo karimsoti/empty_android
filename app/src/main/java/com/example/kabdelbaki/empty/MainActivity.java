@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("Alert");
-                alertDialog.setMessage(longitude + " " + latitude);
+                alertDialog.setMessage(checkIfCoordinatesAreEmpty());
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -90,9 +90,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void clearCoordinates(){
-        this.latitude = 0.0;
-        this.latitude = 0.0;
+    public String checkIfCoordinatesAreEmpty() {
+
+        if ((this.latitude == 0.0 || this.longitude == 0.0) ) {
+            return "Signal not available, please keep clicking";
+        } else {
+            return Double.toString(this.latitude) + " " + Double.toString(this.longitude);
+        }
     }
 
 
@@ -114,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             LocationListener locationListener = new LocationListener() {
 
-                 public void onLocationChanged(Location location) {
+                public void onLocationChanged(Location location) {
                     longitude = location.getLongitude();
                     latitude = location.getLatitude();
                 }
